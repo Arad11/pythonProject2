@@ -30,7 +30,7 @@ driver.maximize_window()
 time.sleep(3)
 
 """this opening is match to task 1 - 6. opening for task 7 will be down there"""
-
+"""
 names = []
 quantity = []
 price = []
@@ -52,7 +52,7 @@ for i in range(0,4,1):
     Product_Page(driver).click_main_page()
 time.sleep(2)
 driver.find_element_by_css_selector("[href='#/shoppingCart']").click()
-
+"""
 # ###############################################################################
 # """FIRST TASK"""
 # ###############################################################################
@@ -182,7 +182,7 @@ else:
 # """task 5""" what should I show? back here later
 # ##################################################
 # #gets values from the table at the cart page
-
+"""
 table = driver.find_element_by_css_selector("[class='fixedTableEdgeCompatibility']")
 rows = table.find_elements_by_tag_name("tr")
 products_names = []
@@ -211,22 +211,31 @@ for i in range(len(products_price)):
 print(count_price)
 #access to the price in the cart shopping
 #if i print count price the cart price does not shown and the oposite.
-# I cant fix it with sleep or WEbelementwait
-print(driver.find_element_by_css_selector('[class="roboto-medium cart-total ng-binding"]').text)
+
+print(driver.find_element_by_css_selector('[class="roboto-medium cart-total ng-binding"]').text.replace("$",""))
 # pricr_pop_up = driver.find_element_by_css_selector('[class="roboto-medium cart-total ng-binding"]').text
+cart_price = driver.find_element_by_css_selector('[class="roboto-medium cart-total ng-binding"]').text.replace("$","")
+if cart_price == count_price:
+    print("True")
+elif cart_price - count_price < 0.1:
+    print("True")
+else:
+    print("False")
+"""
 # ################################################################
 # """task 7"""
 # ################################################################
-# Main_Page(driver).click_tablets()
-# Category_Page(driver).focus_on_a_product(1).click()
-# Product_Page(driver).add_to_cart()
-# print(driver.current_url)
-# # why I cant click on this buttom?
-# # driver.find_elements_by_class_name("ng-binding")[2].click()
-# # Product_Page(driver).back_to_category_page()
-# print(driver.current_url)
-# Category_Page(driver).focus_main_page()
-# print(driver.current_url)
+"""
+Main_Page(driver).click_tablets()
+Category_Page(driver).focus_on_a_product(1).click()
+Product_Page(driver).add_to_cart()
+Product_Page(driver).back_to_category_page()
+if driver.current_url == "https://www.advantageonlineshopping.com/#/category/Tablet/3":
+    print("True")
+Category_Page(driver).focus_main_page()
+if driver.current_url == "https://www.advantageonlineshopping.com/#/":
+    print("True")
+"""
 # # ################################################################
-# # """t"""
+# # """DONE!"""
 # # ################################################################
