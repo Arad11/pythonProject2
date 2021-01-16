@@ -243,6 +243,7 @@ if driver.current_url == "https://www.advantageonlineshopping.com/#/":
 # # ################################################################
 # # """task 10"""
 # # ################################################################
+"""
 Main_Page(driver).creat_user_new_user_pop_up()
 User_Pop_Up(driver).inser_user_name()
 User_Pop_Up(driver).insert_user_password()
@@ -260,6 +261,7 @@ if login_[1].get_attribute("class") == 'hi-user containMiniTitle ng-binding ng-h
     print("True")
 else:
     print("False")
+"""
 # # ################################################################
 # # """DONE!"""
 # # ################################################################

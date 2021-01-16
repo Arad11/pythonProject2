@@ -17,42 +17,42 @@ driver.maximize_window()
 time.sleep(3)
 
 
-# Main_Page(driver).click_mice()
-# Category_Page(driver).focus_on_a_product(1).click()
-# Product_Page(driver).add_one()
-# Product_Page(driver).add_to_cart()
-# driver.find_element_by_css_selector('[ng-click="go_up()"]').click()
+def values_from_a_table(table_css_selector, place):
+    """this function gets a table's css_selectors, place of the value you want.
+       the function return the value in a list.
+       in this case it's calculat how much products are in the cart
+    """
+    table = driver.find_element_by_css_selector(f"{table_css_selector}")
+    rows = table.find_elements_by_tag_name("tr")
+    answer = []
+    for row in rows:
+        cells = row.find_elements_by_tag_name("td")
+        for i in range(len(cells)):
+            if i == place and i != len(cells) - 1:
+                answer.append(cells[i].text)
+    return answer
 
-###################################################################################################
-# run it together why it does not works
-# Main_Page(driver).click_mice()
-# Category_Page(driver).focus_on_a_product(3).click()
-# # time.sleep(5)
-# # Category_Page(driver).focus_main_page().click()
-# WebDriverWait(driver, 10).until(EC.element_to_be_clickable(By.CSS_SELECTOR('div[class="logo"]')))
-# driver.find_element_by_css_selector('div[class="logo"]').click()
-###################################################################################################
-# print(Product_Page(driver).product_color())
-# Main_Page(driver).creat_user_new_user_pop_up()
-# li = driver.find_elements_by_css_selector('[ng-show="welcome"]>nav>ul>li')
-# for i in range(1, len(li) + 1, 1):
-#     if i == 3:
-#         li[i].click()
-#         break
-Main_Page(driver).creat_user_new_user_pop_up()
-User_Pop_Up(driver).inser_user_name()
-User_Pop_Up(driver).insert_user_password()
-User_Pop_Up(driver).sign_in()
-time.sleep(1)
-login_ = driver.find_elements_by_css_selector('[data-ng-show="userCookie.response"]')
-if login_[1].get_attribute("class") == 'hi-user containMiniTitle ng-binding':
+
+# add 3 products to the cart
+for i in range(0,4,1):
+    # Go into the mice page
+    Main_Page(driver).click_mice()
+    # choose an product
+    Category_Page(driver).focus_on_a_product(i).click()
+    # add amount
+    for t in range(1, i, 1):
+        Product_Page(driver).add_one()
+    # keeps it's values for Q2
+    # add product to the cart
+    Product_Page(driver).add_to_cart()
+    # try to go back to the main page
+    Product_Page(driver).click_main_page()
+time.sleep(2)
+driver.find_element_by_css_selector("[href='#/shoppingCart']").click()
+
+y = values_from_a_table( "[class='fixedTableEdgeCompatibility']", 4)
+total_amount = 0
+for i in y:
+    total_amount += int(i)
+if total_amount == int(driver.find_element_by_css_selector('[id="shoppingCartLink"]>span').text):
     print("True")
-else:
-    print("False")
-Main_Page(driver).creat_user_new_user_pop_up()
-User_Pop_Up(driver).sign_out()
-time.sleep(1)
-if login_[1].get_attribute("class") == 'hi-user containMiniTitle ng-binding ng-hide':
-    print("True")
-else:
-    print("False")
