@@ -39,8 +39,20 @@ time.sleep(3)
 #     if i == 3:
 #         li[i].click()
 #         break
-time.sleep(2)
-driver.find_element_by_id('menuUserLink').click()
+Main_Page(driver).creat_user_new_user_pop_up()
 User_Pop_Up(driver).inser_user_name()
 User_Pop_Up(driver).insert_user_password()
 User_Pop_Up(driver).sign_in()
+time.sleep(1)
+login_ = driver.find_elements_by_css_selector('[data-ng-show="userCookie.response"]')
+if login_[1].get_attribute("class") == 'hi-user containMiniTitle ng-binding':
+    print("True")
+else:
+    print("False")
+Main_Page(driver).creat_user_new_user_pop_up()
+User_Pop_Up(driver).sign_out()
+time.sleep(1)
+if login_[1].get_attribute("class") == 'hi-user containMiniTitle ng-binding ng-hide':
+    print("True")
+else:
+    print("False")

@@ -11,6 +11,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.select import Select
 from selenium.webdriver.common.action_chains import ActionChains
+from project.User_POP_Up import User_Pop_Up
 
 def remember_details(driver, names, price, colors, quantity):
     """this function remember the details about products before adding to the cart
@@ -241,4 +242,24 @@ if driver.current_url == "https://www.advantageonlineshopping.com/#/":
 # # ################################################################
 # # ################################################################
 # # """task 10"""
+# # ################################################################
+Main_Page(driver).creat_user_new_user_pop_up()
+User_Pop_Up(driver).inser_user_name()
+User_Pop_Up(driver).insert_user_password()
+User_Pop_Up(driver).sign_in()
+time.sleep(1)
+login_ = driver.find_elements_by_css_selector('[data-ng-show="userCookie.response"]')
+if login_[1].get_attribute("class") == 'hi-user containMiniTitle ng-binding':
+    print("True")
+else:
+    print("False")
+Main_Page(driver).creat_user_new_user_pop_up()
+User_Pop_Up(driver).sign_out()
+time.sleep(1)
+if login_[1].get_attribute("class") == 'hi-user containMiniTitle ng-binding ng-hide':
+    print("True")
+else:
+    print("False")
+# # ################################################################
+# # """DONE!"""
 # # ################################################################
