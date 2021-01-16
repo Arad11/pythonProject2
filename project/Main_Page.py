@@ -25,3 +25,6 @@ class Main_Page:
 
     def click_main_page(self):
          return self.driver.find_element_by_css_selector('[ng-click="go_up()"]').click()
+
+    def creat_user_new_user_pop_up(self):
+        return self.driver.find_element_by_css_selector('[id="menuUserLink"]').click()

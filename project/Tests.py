@@ -1,5 +1,6 @@
 from selenium import webdriver
 import time
+from project.User_POP_Up import User_Pop_Up
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 # from config import DRIVER_PATH
@@ -32,17 +33,14 @@ time.sleep(3)
 # driver.find_element_by_css_selector('div[class="logo"]').click()
 ###################################################################################################
 # print(Product_Page(driver).product_color())
-
-
-Main_Page(driver).click_tablets()
-Category_Page(driver).focus_on_a_product(1).click()
-Product_Page(driver).add_to_cart()
-print(driver.current_url)
-# why I cant click on this buttom?
-# driver.find_elements_by_class_name("ng-binding")[2].click()
-# driver.find_elements_by_css_selector('[class="uiview ng-scope"]>nav>a')[2].click()
-# driver.find_element_by_css_selector("body > div.uiview.ng-scope > nav > a:nth-child(2)").click()
-Product_Page(driver).back_to_category_page()
-print(driver.current_url)
-# Category_Page(driver).focus_main_page()
-# print(driver.current_url)
+# Main_Page(driver).creat_user_new_user_pop_up()
+# li = driver.find_elements_by_css_selector('[ng-show="welcome"]>nav>ul>li')
+# for i in range(1, len(li) + 1, 1):
+#     if i == 3:
+#         li[i].click()
+#         break
+time.sleep(2)
+driver.find_element_by_id('menuUserLink').click()
+User_Pop_Up(driver).inser_user_name()
+User_Pop_Up(driver).insert_user_password()
+User_Pop_Up(driver).sign_in()
