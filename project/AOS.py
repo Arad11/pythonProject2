@@ -5,6 +5,7 @@ import time
 from project.Main_Page import Main_Page
 from project.Category_Page import Category_Page
 from project.Product_Page import Product_Page
+from project.Actions import Actions
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
@@ -23,37 +24,38 @@ def remember_details(driver, names, price, colors, quantity):
     colors.append(Product_Page(driver).product_color())
 
 
-driver = webdriver.Chrome(executable_path= r"D:\python\chromedriver.exe")
-#driver = webdriver.Chrome(executable_path= DRIVER_PATH)
-driver.implicitly_wait(10)
-driver.get("https://www.advantageonlineshopping.com/#/")
-driver.maximize_window()
-time.sleep(3)
+# driver = webdriver.Chrome(executable_path= r"D:\python\chromedriver.exe")
+# #driver = webdriver.Chrome(executable_path= DRIVER_PATH)
+# driver.implicitly_wait(10)
+# driver.get("https://www.advantageonlineshopping.com/#/")
+# driver.maximize_window()
+# time.sleep(3)
+driver = Actions.open_web()
 
 """this opening is match to task 1 - 6. opening for task 7 will be down there"""
-"""
+
 names = []
 quantity = []
 price = []
 colors = []
 # add 3 products to the cart
-for i in range(0,4,1):
-    # Go into the mice page
-    Main_Page(driver).click_mice()
-    # choose an product
-    Category_Page(driver).focus_on_a_product(i).click()
-    # add amount
-    for t in range(1, i, 1):
-        Product_Page(driver).add_one()
-    # keeps it's values for Q2
-    remember_details(driver,names,price,colors,quantity)
-    # add product to the cart
-    Product_Page(driver).add_to_cart()
-    # try to go back to the main page
-    Product_Page(driver).click_main_page()
+Actions.add_3_products(driver, "mice")
+# for i in range(0,3,1):
+#     # Go into the mice page
+#     Main_Page(driver).click_mice()
+#     # choose an product
+#     Category_Page(driver).focus_on_a_product(i).click()
+#     # add amount
+#     for t in range(1, i, 1):
+#         Product_Page(driver).add_one()
+#     # keeps it's values for Q2
+#     remember_details(driver,names,price,colors,quantity)
+#     # add product to the cart
+#     Product_Page(driver).add_to_cart()
+#     # try to go back to the main page
+#     Product_Page(driver).click_main_page()
 time.sleep(2)
 driver.find_element_by_css_selector("[href='#/shoppingCart']").click()
-"""
 # ###############################################################################
 # """FIRST TASK"""
 # ###############################################################################
@@ -160,7 +162,7 @@ else:
 #             products_quantity.append(cells[i].text)
 #         if i == 5:
 #             products_price.append(cells[i].find_element_by_tag_name("p").text)
-
+#
 # if pop_up_products_quantity == products_quantity:
 #     print("equal quantity")
 # else:
@@ -218,8 +220,8 @@ print(driver.find_element_by_css_selector('[class="roboto-medium cart-total ng-b
 cart_price = driver.find_element_by_css_selector('[class="roboto-medium cart-total ng-binding"]').text.replace("$","")
 if cart_price == count_price:
     print("True")
-elif cart_price - count_price < 0.1:
-    print("True")
+# elif cart_price - count_price < 0.1:
+#     print("True")
 else:
     print("False")
 """

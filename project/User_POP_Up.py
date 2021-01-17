@@ -13,3 +13,18 @@ class User_Pop_Up:
 
     def sign_out(self):
         return self.driver.find_element_by_css_selector('[ng-click="signOut($event)"]').click()
+
+    def next(self):
+        return self.driver.find_element_by_id('next_btn').click()
+
+    def safepay(self):
+        return self.driver.find_element_by_name("safepay").click()
+
+    def safepay_username(self, username):
+        return self.driver.find_element_by_name('safepay_username').send_keys(username)
+
+    def safepay_password(self, password):
+        return self.driver.find_element_by_name('safepay_password').send_keys(password)
+
+    def pay_now(self):
+        return self.driver.find_element_by_id('pay_now_btn_SAFEPAY').click()
