@@ -9,7 +9,7 @@ driver.find_element_by_css_selector("[href='#/shoppingCart']").click()
 products_quantity =[]
 products_price = []
 
-table = driver.find_element_by_css_selector("[class='fixedTableEdgeCompatibility']")
+table = driver.find_element_by_css_selectsor("[class='fixedTableEdgeCompatibility']")
 rows = table.find_elements_by_tag_name("tr")
 for row in rows:
     cells = row.find_elements_by_tag_name("td")
