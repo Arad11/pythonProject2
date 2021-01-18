@@ -1,3 +1,4 @@
+import time
 class Main_Page:
     def __init__(self, driver):
         self.driver = driver
@@ -25,3 +26,7 @@ class Main_Page:
 
     def click_main_page(self):
          return self.driver.find_element_by_css_selector('[ng-click="go_up()"]').click()
+
+    def creat_user_new_user_pop_up(self):
+        time.sleep(2)
+        return self.driver.find_element_by_id('menuUserLink').click()

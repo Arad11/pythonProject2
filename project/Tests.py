@@ -1,34 +1,23 @@
-from selenium import webdriver
+from project.Actions import Actions
 import time
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.common.by import By
-# from config import DRIVER_PATH
-from selenium.webdriver.support.ui import WebDriverWait
-from project.Main_Page import Main_Page
-from project.Category_Page import Category_Page
-from project.Product_Page import Product_Page
-from project.Cart_Page import Cart_Page
-driver = webdriver.Chrome(executable_path= r"D:\python\chromedriver.exe")
-#driver = webdriver.Chrome(executable_path = DRIVER_PATH)
-driver.implicitly_wait(10)
-driver.get("https://www.advantageonlineshopping.com/#/")
-driver.maximize_window()
-time.sleep(3)
 
+driver = Actions.open_web()
+Actions.add_3_products(driver, "mice")
+time.sleep(2)
+driver.find_element_by_css_selector("[href='#/shoppingCart']").click()
 
-Main_Page(driver).click_mice()
-Category_Page(driver).focus_on_a_product(1).click()
-Product_Page(driver).add_one()
-Product_Page(driver).add_to_cart()
-driver.find_element_by_css_selector('[ng-click="go_up()"]').click()
+products_quantity =[]
+products_price = []
 
-###################################################################################################
-# run it together why it does not works
-# Main_Page(driver).click_mice()
-# Category_Page(driver).focus_on_a_product(3).click()
-# # time.sleep(5)
-# # Category_Page(driver).focus_main_page().click()
-# WebDriverWait(driver, 10).until(EC.element_to_be_clickable(By.CSS_SELECTOR('div[class="logo"]')))
-# driver.find_element_by_css_selector('div[class="logo"]').click()
-###################################################################################################
-# print(Product_Page(driver).product_color())
+table = driver.find_element_by_css_selectsor("[class='fixedTableEdgeCompatibility']")
+rows = table.find_elements_by_tag_name("tr")
+for row in rows:
+    cells = row.find_elements_by_tag_name("td")
+    for i in range(len(cells)):
+        if i == 4 and i != len(cells) -1:
+            products_quantity.append(cells[i].text)
+        if i == 5:
+            products_price.append(cells[i].find_element_by_tag_name("p").text)
+
+print(products_price)
+print(products_quantity)

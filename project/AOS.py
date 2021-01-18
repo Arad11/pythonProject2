@@ -5,12 +5,14 @@ import time
 from project.Main_Page import Main_Page
 from project.Category_Page import Category_Page
 from project.Product_Page import Product_Page
+from project.Actions import Actions
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.select import Select
 from selenium.webdriver.common.action_chains import ActionChains
+from project.User_POP_Up import User_Pop_Up
 
 def remember_details(driver, names, price, colors, quantity):
     """this function remember the details about products before adding to the cart
@@ -22,12 +24,13 @@ def remember_details(driver, names, price, colors, quantity):
     colors.append(Product_Page(driver).product_color())
 
 
-driver = webdriver.Chrome(executable_path= r"D:\python\chromedriver.exe")
-#driver = webdriver.Chrome(executable_path= DRIVER_PATH)
-driver.implicitly_wait(10)
-driver.get("https://www.advantageonlineshopping.com/#/")
-driver.maximize_window()
-time.sleep(3)
+# driver = webdriver.Chrome(executable_path= r"D:\python\chromedriver.exe")
+# #driver = webdriver.Chrome(executable_path= DRIVER_PATH)
+# driver.implicitly_wait(10)
+# driver.get("https://www.advantageonlineshopping.com/#/")
+# driver.maximize_window()
+# time.sleep(3)
+driver = Actions.open_web()
 
 """this opening is match to task 1 - 6. opening for task 7 will be down there"""
 
@@ -36,23 +39,23 @@ quantity = []
 price = []
 colors = []
 # add 3 products to the cart
-for i in range(0,4,1):
-    # Go into the mice page
-    Main_Page(driver).click_mice()
-    # choose an product
-    Category_Page(driver).focus_on_a_product(i).click()
-    # add amount
-    for t in range(1, i, 1):
-        Product_Page(driver).add_one()
-    # keeps it's values for Q2
-    remember_details(driver,names,price,colors,quantity)
-    # add product to the cart
-    Product_Page(driver).add_to_cart()
-    # try to go back to the main page
-    Product_Page(driver).click_main_page()
+Actions.add_3_products(driver, "mice")
+# for i in range(0,3,1):
+#     # Go into the mice page
+#     Main_Page(driver).click_mice()
+#     # choose an product
+#     Category_Page(driver).focus_on_a_product(i).click()
+#     # add amount
+#     for t in range(1, i, 1):
+#         Product_Page(driver).add_one()
+#     # keeps it's values for Q2
+#     remember_details(driver,names,price,colors,quantity)
+#     # add product to the cart
+#     Product_Page(driver).add_to_cart()
+#     # try to go back to the main page
+#     Product_Page(driver).click_main_page()
 time.sleep(2)
 driver.find_element_by_css_selector("[href='#/shoppingCart']").click()
-
 # ###############################################################################
 # """FIRST TASK"""
 # ###############################################################################
@@ -159,7 +162,7 @@ else:
 #             products_quantity.append(cells[i].text)
 #         if i == 5:
 #             products_price.append(cells[i].find_element_by_tag_name("p").text)
-
+#
 # if pop_up_products_quantity == products_quantity:
 #     print("equal quantity")
 # else:
@@ -182,7 +185,7 @@ else:
 # """task 5""" what should I show? back here later
 # ##################################################
 # #gets values from the table at the cart page
-
+"""
 table = driver.find_element_by_css_selector("[class='fixedTableEdgeCompatibility']")
 rows = table.find_elements_by_tag_name("tr")
 products_names = []
@@ -211,22 +214,56 @@ for i in range(len(products_price)):
 print(count_price)
 #access to the price in the cart shopping
 #if i print count price the cart price does not shown and the oposite.
-# I cant fix it with sleep or WEbelementwait
-print(driver.find_element_by_css_selector('[class="roboto-medium cart-total ng-binding"]').text)
+
+print(driver.find_element_by_css_selector('[class="roboto-medium cart-total ng-binding"]').text.replace("$",""))
 # pricr_pop_up = driver.find_element_by_css_selector('[class="roboto-medium cart-total ng-binding"]').text
+cart_price = driver.find_element_by_css_selector('[class="roboto-medium cart-total ng-binding"]').text.replace("$","")
+if cart_price == count_price:
+    print("True")
+# elif cart_price - count_price < 0.1:
+#     print("True")
+else:
+    print("False")
+"""
 # ################################################################
 # """task 7"""
 # ################################################################
-# Main_Page(driver).click_tablets()
-# Category_Page(driver).focus_on_a_product(1).click()
-# Product_Page(driver).add_to_cart()
-# print(driver.current_url)
-# # why I cant click on this buttom?
-# # driver.find_elements_by_class_name("ng-binding")[2].click()
-# # Product_Page(driver).back_to_category_page()
-# print(driver.current_url)
-# Category_Page(driver).focus_main_page()
-# print(driver.current_url)
+"""
+Main_Page(driver).click_tablets()
+Category_Page(driver).focus_on_a_product(1).click()
+Product_Page(driver).add_to_cart()
+Product_Page(driver).back_to_category_page()
+if driver.current_url == "https://www.advantageonlineshopping.com/#/category/Tablet/3":
+    print("True")
+Category_Page(driver).focus_main_page()
+if driver.current_url == "https://www.advantageonlineshopping.com/#/":
+    print("True")
+"""
 # # ################################################################
-# # """t"""
+# # """DONE!"""
+# # ################################################################
+# # ################################################################
+# # """task 10"""
+# # ################################################################
+"""
+Main_Page(driver).creat_user_new_user_pop_up()
+User_Pop_Up(driver).inser_user_name()
+User_Pop_Up(driver).insert_user_password()
+User_Pop_Up(driver).sign_in()
+time.sleep(1)
+login_ = driver.find_elements_by_css_selector('[data-ng-show="userCookie.response"]')
+if login_[1].get_attribute("class") == 'hi-user containMiniTitle ng-binding':
+    print("True")
+else:
+    print("False")
+Main_Page(driver).creat_user_new_user_pop_up()
+User_Pop_Up(driver).sign_out()
+time.sleep(1)
+if login_[1].get_attribute("class") == 'hi-user containMiniTitle ng-binding ng-hide':
+    print("True")
+else:
+    print("False")
+"""
+# # ################################################################
+# # """DONE!"""
 # # ################################################################

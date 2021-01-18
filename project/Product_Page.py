@@ -36,11 +36,5 @@ class Product_Page:
                 return  i.get_attribute("class").split()[-1]
 
     def back_to_category_page(self):
-        classes = self.driver.find_elements_by_class_name("ng-binding")
-        count = 0
-        for i in classes[::-1]:
-            if count == 1:
-                count = classes[count]
-                break
-            count +=1
-        return count.click()
+        # try to find other selector
+        self.driver.find_element_by_css_selector("body > div.uiview.ng-scope > nav > a:nth-child(2)").click()
