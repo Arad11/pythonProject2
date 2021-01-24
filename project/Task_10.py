@@ -5,7 +5,7 @@ from project.Actions import Actions
 
 driver = Actions.open_web()
 Main_Page(driver).creat_user_new_user_pop_up()
-User_Pop_Up(driver).inser_user_name()
+User_Pop_Up(driver).insert_user_name()
 User_Pop_Up(driver).insert_user_password()
 User_Pop_Up(driver).sign_in()
 time.sleep(1)

@@ -31,13 +31,12 @@ class Actions:
             # try to go back to the main page
             Product_Page(driver).click_main_page()
 
-
     def values_from_a_table(driver, table_css_selector, place):
         """this function gets a table's css_selectors, place of the value you want.
            the function return the value in a list.
-           in this case it's calculat how much products are in the cart
+           in this case it calculates how much products are in the cart.
         """
-        table = driver.find_element_by_css_selector(f"{table_css_selector}")
+        table = driver.find_element_by_css_selector(table_css_selector)
         rows = table.find_elements_by_tag_name("tr")
         answer = []
         for row in rows:
@@ -50,18 +49,19 @@ class Actions:
     def remember_details(driver, names, price, colors, quantity):
         """this function remember the details about products before adding to the cart
         """
-        quantity.append(Product_Page(driver).product_quanity())
+        quantity.append(Product_Page(driver).product_quantity())
         names.append(Product_Page(driver).product_name())
         price.append(Product_Page(driver).product_price())
         colors.append(Product_Page(driver).product_color())
 
     def add_3_products_and_save_details(driver, category, names, price, colors, quantity):
-        """this action gets a driver category and 4 lists. the user will get 3 products for his cart and information about products he oredereds"""
+        """this action gets a driver category and 4 lists. the user will get 3 products for his cart and information
+        about products he chose """
         # add 3 products to the cart
-        categorys_dickt = {"speakers": "speakersImg", "tablets": "tabletsImg", "leptops": "laptopsImg", "mice": "miceImg", "headphones": "headphonesImg"}
+        categories_dickt = {"speakers": "speakersImg", "tablets": "tabletsImg", "leptops": "laptopsImg", "mice": "miceImg", "headphones": "headphonesImg"}
         for i in range(0, 3, 1):
             # Go into the category page
-            driver.find_element_by_id(categorys_dickt[category]).click()
+            driver.find_element_by_id(categories_dickt[category]).click()
             # choose an product
             Category_Page(driver).focus_on_a_product(i).click()
             # add amount
@@ -72,7 +72,6 @@ class Actions:
             Product_Page(driver).add_to_cart()
             # try to go back to the main page
             Product_Page(driver).click_main_page()
-
 
     def take_details_from_pop_up_cart(driver, names, colors, quantity, price):
         """this action takes all details about the products from the pop up cart"""
@@ -94,4 +93,8 @@ class Actions:
                 if i == 2:
                     price.append(cells[i].find_element_by_tag_name("p").text)
 
+    def change_quantity(driver, quantity):
+        """This action changes the product's quantity in the product's page."""
+        driver.find_element_by_name("quantity").click()
+        driver.find_element_by_name("quantity").send_keys(quantity)
 

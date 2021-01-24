@@ -25,7 +25,7 @@ class Product_Page:
 
     def product_name(self):
         return self.driver.find_element_by_css_selector('[class="roboto-regular screen768 ng-binding"]').text
-    def product_quanity(self):
+    def product_quantity(self):
         return self.driver.find_element_by_css_selector('[name="quantity"]').get_attribute("value")
     def product_price(self):
         return self.driver.find_element_by_css_selector('[class="roboto-thin screen768 ng-binding"]').text
@@ -33,7 +33,7 @@ class Product_Page:
         colors_list = self.driver.find_elements_by_css_selector('[id="rabbit"]')
         for i in colors_list:
             if "colorSelected" in i.get_attribute("class").split():
-                return  i.get_attribute("class").split()[-1]
+                return i.get_attribute("class").split()[-1]
 
     def back_to_category_page(self):
         # try to find other selector

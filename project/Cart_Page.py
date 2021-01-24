@@ -9,4 +9,4 @@ class Cart_Page:
         return self.driver.find_elements_by_css_selector('[translate="EDIT"]')[i].click()
 
     def check_out(self):
-        return self.driver.find_elements_by_css_selector('[colspan="5"]>button').click()
+        return self.driver.find_element_by_css_selector('[colspan="5"]>button').click()

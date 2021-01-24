@@ -7,7 +7,7 @@ Actions.add_3_products(driver, "mice")
 time.sleep(2)
 driver.find_element_by_css_selector("[href='#/shoppingCart']").click()
 
-# #gets values from the table at the cart page
+# gets values from the table at the cart page
 table = driver.find_element_by_css_selector("[class='fixedTableEdgeCompatibility']")
 rows = table.find_elements_by_tag_name("tr")
 products_quantity =[]

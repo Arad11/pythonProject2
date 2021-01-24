@@ -16,8 +16,11 @@ class General:
                 if i == 2:
                     price = cells[i].find_element_by_tag_name("p").text
 
-        return {"names" : names, "quantity" : quantity, "color" : color, "price" : price}
+        return {"names": names, "quantity": quantity, "color": color, "price": price}
 
     def change_quantity(self, quantity):
         self.driver.find_element_by_name("quantity").click()
         self.driver.find_element_by_name("quantity").send_keys(quantity)
+
+    def my_orders(self):
+        return self.driver.find_element_by_css_selector('[id = "menuUserLink"] > div > [translate = "My_Orders"]').click()
