@@ -35,14 +35,11 @@ cart_price = driver.find_element_by_css_selector('[class="roboto-medium cart-tot
 print(cart_price)
 # access to the products count - pop-up
 pop_up_count = driver.find_element_by_css_selector('[class="roboto-regular ng-binding"]').text.split()[0]
-# print(pop_up_count)
-# print(pop_up_count[-1])
 
 # why can't convert string to float?
 if float(cart_price) == count_price:
     print("True")
-# elif cart_price - count_price < 0.1:
-#     print("True")
+
 else:
     print("False")
 
