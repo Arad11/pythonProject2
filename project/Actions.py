@@ -2,8 +2,11 @@ from selenium import webdriver
 import time
 from project.Category_Page import Category_Page
 from project.Product_Page import Product_Page
-class Actions:
+from project.CheckOut import CheckOut
+from project.Registration_Page import Registration_Page
 
+
+class Actions:
     def open_web():
         """this action opening the driver"""
         driver = webdriver.Chrome(executable_path=r"D:\python\chromedriver.exe")
@@ -97,4 +100,35 @@ class Actions:
         """This action changes the product's quantity in the product's page."""
         driver.find_element_by_name("quantity").click()
         driver.find_element_by_name("quantity").send_keys(quantity)
+
+    def checkout_details(driver, card_num, cvv_number, expiration_mm, expiration_yy, cardholder_name):
+        """This action fills the masterCredit's details in the CheckOut page."""
+        CheckOut(driver).next()
+        CheckOut(driver).masterCredit()
+        CheckOut(driver).edit_details()
+        CheckOut(driver).enter_card_num(card_num)
+        CheckOut(driver).enter_cvv_number(cvv_number)
+        CheckOut(driver).enter_expiration_mm(expiration_mm)
+        CheckOut(driver).enter_expiration_yy(expiration_yy)
+        CheckOut(driver).enter_cardholder_name(cardholder_name)
+        CheckOut(driver).pay_now_masterCredit()
+
+    def details_registration_page(driver, username, email, password, first_name, last_name, phone_number, country, city, address, state, postal_code):
+        """This action fills the registration's details in the CheckOut page."""
+        Registration_Page(driver).enter_username(username)
+        Registration_Page(driver).enter_email(email)
+        Registration_Page(driver).enter_password(password)
+        Registration_Page(driver).confirm_password(password)
+        Registration_Page(driver).enter_first_name(first_name)
+        Registration_Page(driver).enter_last_name(last_name)
+        Registration_Page(driver).enter_phone_number(phone_number)
+        Registration_Page(driver).enter_country(country)
+        Registration_Page(driver).enter_city(city)
+        Registration_Page(driver).enter_address(address)
+        Registration_Page(driver).enter_state(state)
+        Registration_Page(driver).enter_postal_code(postal_code)
+        Registration_Page(driver).agreement()
+        Registration_Page(driver).register()
+        CheckOut(driver).next()
+
 

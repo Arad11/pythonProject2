@@ -1,4 +1,6 @@
 class Cart_Page:
+    """This class refers to the Cart page and it's actions."""
+
     def __init__(self, driver):
         self.driver = driver
 

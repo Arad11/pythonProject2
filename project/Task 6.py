@@ -4,51 +4,42 @@ from project.Main_Page import Main_Page
 from project.Category_Page import Category_Page
 from project.Product_Page import Product_Page
 from project.Cart_Page import Cart_Page
-from project.general_functions import General
 from project.Actions import Actions
 
 # outside functions are not running
-chromedriver = '/Users/nitzanwexler/Desktop/QA/selenium/chromedriver'
+chromedriver = r'C:\Users\USER4\Desktop\New folder\chromedriver.exe'
+#chromedriver = '/Users/nitzanwexler/Desktop/QA/selenium/chromedriver'
 driver = webdriver.Chrome(chromedriver)
 
 driver.get("http://advantageonlineshopping.com/#/")
 driver.maximize_window()
 driver.implicitly_wait(10)
 
+names = []
+color = []
+quantity = []
+price = []
 
 Main_Page(driver).click_tablets()
 Category_Page(driver).focus_on_a_product(2)
+Actions.remember_details(names, price, color, quantity)
 Product_Page(driver).add_to_cart()
 
 Main_Page(driver).click_main_page()
 
-Main_Page(driver).click_tablets()
+Main_Page(driver).click_laptops()
 Category_Page(driver).focus_on_a_product(0)
+Actions.remember_details(names, price, color, quantity)
 Product_Page(driver).add_to_cart()
 
 Main_Page(driver).click_cart()
 
 Cart_Page(driver).edit_product_from_cart(0)
+Actions().change_quantity(3)
 Product_Page(driver).add_to_cart()
 
-Cart_Page(driver).edit_product_from_cart(0)
-
-names = [Product_Page(driver).product_name()]
-color = [Product_Page(driver).product_color()]
-quantity = [Product_Page(driver).product_quantity()]
-price = [Product_Page(driver).product_price()]
-
-
-General(driver).change_quantity(3)
-Product_Page(driver).add_to_cart()
 Cart_Page(driver).edit_product_from_cart(1)
-
-names.append(Product_Page(driver).product_name())
-color.append(Product_Page(driver).product_color())
-quantity.append(Product_Page(driver).product_quantity())
-price.append(Product_Page(driver).product_price())
-
-General(driver).change_quantity(5)
+Actions().change_quantity(5)
 Product_Page(driver).add_to_cart()
 
 names2 = [Actions().values_from_a_table('table[class="fixedTableEdgeCompatibility"]', 1)]

@@ -8,16 +8,17 @@ from project.Cart_Page import Cart_Page
 from project.My_Orders import My_Orders
 from project.CheckOut import CheckOut
 from project.Registration_Page import Registration_Page
+from project.Actions import Actions
 
 
-chromedriver = '/Users/nitzanwexler/Desktop/QA/selenium/chromedriver'
+chromedriver = r'C:\Users\USER4\Desktop\New folder\chromedriver.exe'
+#chromedriver = '/Users/nitzanwexler/Desktop/QA/selenium/chromedriver'
 driver = webdriver.Chrome(chromedriver)
 
 driver.get("http://advantageonlineshopping.com/#/")
 driver.maximize_window()
 driver.implicitly_wait(10)
 
-# Actions().add_3_products('mice')
 Main_Page(driver).click_speakers()
 Category_Page(driver).focus_on_a_product(2).click()
 product1 = [Product_Page(driver).product_name(), Product_Page(driver).product_quantity(), Product_Page(driver).product_color()]
@@ -35,33 +36,15 @@ Cart_Page(driver).check_out()
 
 CheckOut(driver).registration_in_payment()
 
-Registration_Page(driver).enter_username('Ss11')
-Registration_Page(driver).enter_email('n@gmail.com')
-Registration_Page(driver).enter_password('Ss11')
-Registration_Page(driver).confirm_password('Ss11')
-Registration_Page(driver).enter_first_name('sami')
-Registration_Page(driver).enter_last_name('cohen')
-Registration_Page(driver).enter_phone_number('0543008288')
-Registration_Page(driver).enter_country('Israel')
-Registration_Page(driver).enter_city('raanana')
-Registration_Page(driver).enter_address('hertzel 7')
-Registration_Page(driver).enter_state('Israel')
-Registration_Page(driver).enter_postal_code('2774938')
-Registration_Page(driver).agreement()
-Registration_Page(driver).register()
+Actions.details_registration_page('Ss11', 'n@gmail.com', 'Ss11', 'sami', 'cohen', '0543008288', 'Israel', 'raanana', 'hertzel 7', 'Israel', '2774938')
 
-CheckOut(driver).next()
 CheckOut(driver).safepay()
 CheckOut(driver).safepay_username('Ss11-')
 CheckOut(driver).safepay_password('Ss11')
 CheckOut(driver).pay_now_safepay()
 
 header_payment = driver.find_element_by_css_selector("[translate='ORDER_PAYMENT']").text
-ordernum = driver.find_element_by_id("orderNumberLabel").text
 payment_method = driver.find_elements_by_css_selector('[class="innerSeccion"]>label')[5].text
-order_date = driver.find_elements_by_css_selector('[class="innerSeccion"]>label>a')[1].text
-subtotal = driver.find_elements_by_css_selector('[class="innerSeccion"]>label>a')[2].text
-
 if header_payment and payment_method:
     order_payment = True
 else:
@@ -74,10 +57,14 @@ if header_cart:
 else:
     shopping_cart = False
 
+ordernum = driver.find_element_by_id("orderNumberLabel").text
+order_date = driver.find_elements_by_css_selector('[class="innerSeccion"]>label>a')[1].text
+subtotal = driver.find_elements_by_css_selector('[class="innerSeccion"]>label>a')[2].text
+
 My_Orders(driver).go_to_my_orders()
-detailslist = My_Orders(driver).order_details(0)
-productA = My_Orders.order_product_details(0, 0)
-productB = My_Orders.order_product_details(0, 1)
+detailslist = My_Orders(driver).order_details(-2)
+productA = My_Orders(driver).order_product_details(1, 0)
+productB = My_Orders(driver).order_product_details(1, 1)
 
 if detailslist[0] == ordernum and detailslist[1] == order_date and detailslist[2] == subtotal:
     details = True

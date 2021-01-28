@@ -11,3 +11,5 @@ for i in y:
     total_amount += int(i)
 if total_amount == int(driver.find_element_by_css_selector('[id="shoppingCartLink"]>span').text):
     print("True")
+else:
+    print("False")
