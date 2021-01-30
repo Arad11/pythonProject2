@@ -1,3 +1,8 @@
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.common.by import By
+
+
 class My_Orders:
     """This class refers to the My Orders page and the information in it."""
 

@@ -4,8 +4,8 @@ from project.Main_Page import Main_Page
 from project.Category_Page import Category_Page
 from project.Product_Page import Product_Page
 
-chromedriver = r'C:\Users\USER4\Desktop\New folder\chromedriver.exe'
-#chromedriver = '/Users/nitzanwexler/Desktop/QA/selenium/chromedriver'
+#chromedriver = r'C:\Users\USER4\Desktop\New folder\chromedriver.exe'
+chromedriver = '/Users/nitzanwexler/Desktop/QA/selenium/chromedriver'
 driver = webdriver.Chrome(chromedriver)
 
 driver.get("http://advantageonlineshopping.com/#/")

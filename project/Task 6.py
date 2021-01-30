@@ -1,14 +1,13 @@
 from selenium import webdriver
-
+import time
 from project.Main_Page import Main_Page
 from project.Category_Page import Category_Page
 from project.Product_Page import Product_Page
 from project.Cart_Page import Cart_Page
 from project.Actions import Actions
 
-# outside functions are not running
-chromedriver = r'C:\Users\USER4\Desktop\New folder\chromedriver.exe'
-#chromedriver = '/Users/nitzanwexler/Desktop/QA/selenium/chromedriver'
+#chromedriver = r'C:\Users\USER4\Desktop\New folder\chromedriver.exe'
+chromedriver = '/Users/nitzanwexler/Desktop/QA/selenium/chromedriver'
 driver = webdriver.Chrome(chromedriver)
 
 driver.get("http://advantageonlineshopping.com/#/")
@@ -20,72 +19,39 @@ color = []
 quantity = []
 price = []
 
+# Adding products to the cart and keeping it's details in lists.
 Main_Page(driver).click_tablets()
-Category_Page(driver).focus_on_a_product(2)
-Actions.remember_details(names, price, color, quantity)
+Category_Page(driver).focus_on_a_product(2).click()
+Actions.remember_details(driver, names, price, color, quantity)
 Product_Page(driver).add_to_cart()
 
 Main_Page(driver).click_main_page()
 
 Main_Page(driver).click_laptops()
-Category_Page(driver).focus_on_a_product(0)
-Actions.remember_details(names, price, color, quantity)
+Category_Page(driver).focus_on_a_product(0).click()
+Actions.remember_details(driver, names, price, color, quantity)
 Product_Page(driver).add_to_cart()
 
 Main_Page(driver).click_cart()
 
+# Editing the products' quantity.
+time.sleep(5)
 Cart_Page(driver).edit_product_from_cart(0)
-Actions().change_quantity(3)
+Actions.change_quantity(driver, 3)
 Product_Page(driver).add_to_cart()
 
+time.sleep(5)
 Cart_Page(driver).edit_product_from_cart(1)
-Actions().change_quantity(5)
+Actions.change_quantity(driver, 5)
 Product_Page(driver).add_to_cart()
 
-names2 = [Actions().values_from_a_table('table[class="fixedTableEdgeCompatibility"]', 1)]
-color2 = [Actions().values_from_a_table('table[class="fixedTableEdgeCompatibility"]', 3)]
-quantity2 = [Actions().values_from_a_table('table[class="fixedTableEdgeCompatibility"]', 4)]
-price2 = [Actions().values_from_a_table('table[class="fixedTableEdgeCompatibility"]', 5)]
+# Keeping the new information in different lists.
+changes = Cart_Page(driver).cart_products_details()
 
-if names == names2 and color == color2 and quantity2 == [3, 5] and price2 == [price[0]*3, price[1]*5]:
+print(names, color, quantity, price)
+print(changes)
+
+if names == changes[0] and color == changes[1] and changes[2] == [3, 5] and changes[3] == [price[0]*3, price[1]*5]:
     print('test passed')
 else:
     print('test failed')
-
-
-
-
-# table = driver.find_element_by_css_selector('table[class="fixedTableEdgeCompatibility"]')
-# rows = table.find_elements_by_tag_name("tr")
-#
-#
-# for row in range(len(rows)):
-#     if row == 0:
-#         cells = rows[row].find_elements_by_tag_name("td")
-#         for i in range(len(cells)):
-#             if i == 1 and i != len(cells) - 1:
-#                 data1.append(cells[i].find_element_by_tag_name("label").text)
-#             if i == 3:
-#                 data1.append(cells[i].find_element_by_css_selector('label[class="roboto-light mobileViewer ng-binding"]').text)
-#             if i == 4:
-#                 data1.append(cells[i].find_element_by_css_selector("label[class='ng-binding']").text)
-#             if i == 5:
-#                 data1.append(cells[i].find_element_by_tag_name("p").text)
-#
-#     if row == 1:
-#         cells = rows[row].find_elements_by_tag_name("td")
-#         for i in range(len(cells)):
-#             if i == 1 and i != len(cells) - 1:
-#                 data2.append(cells[i].find_element_by_tag_name("label").text)
-#             if i == 3:
-#                 data1.append(cells[i].find_element_by_css_selector('label[class="roboto-light mobileViewer ng-binding"]').text)
-#             if i == 4:
-#                 data1.append(cells[i].find_element_by_css_selector("label[class='ng-binding']").text)
-#             if i == 5:
-#                 data2.append(cells[i].find_element_by_tag_name("p").text)
-#
-# print(product1_data)
-# print(product2_data)
-# print('------------------')
-# print(data1)
-# print(data2)

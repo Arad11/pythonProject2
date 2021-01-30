@@ -9,7 +9,8 @@ from project.Registration_Page import Registration_Page
 class Actions:
     def open_web():
         """this action opening the driver"""
-        driver = webdriver.Chrome(executable_path=r"D:\python\chromedriver.exe")
+        #driver = webdriver.Chrome(executable_path=r"D:\python\chromedriver.exe")
+        driver = webdriver.Chrome(executable_path='/Users/nitzanwexler/Desktop/QA/selenium/chromedriver')
         # driver = webdriver.Chrome(executable_path= DRIVER_PATH)
         driver.implicitly_wait(10)
         driver.get("https://www.advantageonlineshopping.com/#/")
@@ -129,6 +130,5 @@ class Actions:
         Registration_Page(driver).enter_postal_code(postal_code)
         Registration_Page(driver).agreement()
         Registration_Page(driver).register()
-        CheckOut(driver).next()
 
 

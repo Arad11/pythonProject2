@@ -1,5 +1,8 @@
 from unittest import TestCase
 import time
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.common.by import By
 
 from project.Actions import Actions
 from project.Main_Page import Main_Page
@@ -69,18 +72,18 @@ class All_Tests(TestCase):
 
     def test_3(self):
         self.skipTest()
-        Actions.add_3_products('mice')
+        Actions.add_3_products(self.driver, 'mice')
         # Making a list of the products in the cart.
         names = []
         colors = []
         quantity = []
         price = []
-        Actions().take_details_from_pop_up_cart(names, colors, quantity, price)
+        Actions.take_details_from_pop_up_cart(self.driver, names, colors, quantity, price)
         Main_Page(self.driver).click_cart()
 
         # Delete one product from the cart and refreshing the cart's page.
         deleted_product_name = [self.driver.find_element_by_css_selector("h3[class='ng-binding']").text]
-        Cart_Page(self.driver).remove_product_from_cart()
+        Cart_Page(self.driver).remove_product_from_cart(2)
         Main_Page(self.driver).click_main_page()
         Main_Page(self.driver).click_cart()
 
@@ -89,7 +92,7 @@ class All_Tests(TestCase):
         colors2 = []
         quantity2 = []
         price2 = []
-        Actions().take_details_from_pop_up_cart(names2, colors2, quantity2, price2)
+        Actions.take_details_from_pop_up_cart(self.driver, names2, colors2, quantity2, price2)
 
         # Compering both lists to see that the deleted item was removed.
         self.assertNotEqual(names, names2)
@@ -97,7 +100,6 @@ class All_Tests(TestCase):
 
     def test_4(self):
         self.skipTest()
-
         # Adding products to the cart.
         Main_Page(self.driver).click_speakers()
         Category_Page(self.driver).focus_on_a_product(2).click()
@@ -116,6 +118,8 @@ class All_Tests(TestCase):
         self.assertEqual(header.text, 'SHOPPING CART')
 
     def test_5(self):
+        self.skipTest()
+
         Actions.add_3_products(self.driver, "mice")
         time.sleep(2)
         self.driver.find_element_by_css_selector("[href='#/shoppingCart']").click()
@@ -174,38 +178,37 @@ class All_Tests(TestCase):
         # Adding products to the cart and keeping it's details in lists.
         Main_Page(self.driver).click_tablets()
         Category_Page(self.driver).focus_on_a_product(2).click()
-        Actions.remember_details(names, price, color, quantity)
+        Actions.remember_details(self.driver, names, price, color, quantity)
         Product_Page(self.driver).add_to_cart()
 
         Main_Page(self.driver).click_main_page()
 
         Main_Page(self.driver).click_laptops()
         Category_Page(self.driver).focus_on_a_product(0).click()
-        Actions.remember_details(names, price, color, quantity)
+        Actions.remember_details(self.driver, names, price, color, quantity)
         Product_Page(self.driver).add_to_cart()
 
         Main_Page(self.driver).click_cart()
 
         # Editing the products' quantity.
+        WebDriverWait(self.driver, 10).until(EC.invisibility_of_element_located((By.CSS_SELECTOR, 'li>[id="toolTipCart"]' )))
         Cart_Page(self.driver).edit_product_from_cart(0)
-        Actions().change_quantity(3)
+        Actions.change_quantity(self.driver, 3)
         Product_Page(self.driver).add_to_cart()
 
+        WebDriverWait(self.driver, 10).until(EC.invisibility_of_element_located((By.CSS_SELECTOR, 'li>[id="toolTipCart"]' )))
         Cart_Page(self.driver).edit_product_from_cart(1)
-        Actions().change_quantity(5)
+        Actions.change_quantity(self.driver, 5)
         Product_Page(self.driver).add_to_cart()
 
         # Keeping the new information in different lists.
-        names2 = [Actions().values_from_a_table('table[class="fixedTableEdgeCompatibility"]', 1)]
-        color2 = [Actions().values_from_a_table('table[class="fixedTableEdgeCompatibility"]', 3)]
-        quantity2 = [Actions().values_from_a_table('table[class="fixedTableEdgeCompatibility"]', 4)]
-        price2 = [Actions().values_from_a_table('table[class="fixedTableEdgeCompatibility"]', 5)]
+        changes = Cart_Page(self.driver).cart_products_details()
 
         # Compering the lists to make sure the quantity has changed.
-        self.assertEqual(names, names2)
-        self.assertEqual(color, color2)
-        self.assertEqual(quantity2, [3, 5])
-        self.assertEqual(price2, [price[0] * 3, price[1] * 5])
+        self.assertEqual(names[0], changes[0][1])
+        self.assertEqual(names[1], changes[0][0])
+        self.assertEqual(color, changes[1])
+        self.assertEqual(changes[2], [3, 5])
 
     def test_7(self):
         self.skipTest()
@@ -236,47 +239,44 @@ class All_Tests(TestCase):
         # Checking out and filling the register page in the payment class.
         Cart_Page(self.driver).check_out()
         CheckOut(self.driver).registration_in_payment()
-        Actions.details_registration_page('Ss11', 'n@gmail.com', 'Ss11', 'sami', 'cohen', '0543008288', 'Israel', 'raanana', 'hertzel 7', 'Israel', '2774938')
+        Actions.details_registration_page(self.driver, 'Sss11', 'n@gmail.com', 'Sss11', 'sami', 'cohen', '0543008288', 'Israel', 'raanana', 'hertzel 7', 'Israel', '2774938')
+        WebDriverWait(self.driver, 10).until(EC.element_to_be_clickable((By.ID, 'next_btn')))
+        CheckOut(self.driver).next()
 
         CheckOut(self.driver).safepay()
         CheckOut(self.driver).safepay_username('Ss11-')
         CheckOut(self.driver).safepay_password('Ss11')
         CheckOut(self.driver).pay_now_safepay()
 
-        # Checking if the order made was successfully.
+     # Checking if the order made was successfully.
         header_payment = self.driver.find_element_by_css_selector("[translate='ORDER_PAYMENT']").text
-        payment_method = self.driver.find_elements_by_css_selector('[class="innerSeccion"]>label')[5].text
-        """if header_payment and payment_method:
-            order_payment = True
-        else:
-            order_payment = False
-        time.sleep(5)
+        WebDriverWait(self.driver, 10).until(EC.visibility_of_element_located((By.ID, 'orderNumberLabel')))
+        ordernum = self.driver.find_element_by_id("orderNumberLabel").text
+        subtotal = self.driver.find_elements_by_css_selector('[class="innerSeccion"]>label>a')[2].text
+        self.assertEqual(header_payment, 'ORDER PAYMENT')
+
         Main_Page(self.driver).click_cart()
         header_cart = self.driver.find_element_by_css_selector(
-            '[class="bigEmptyCart center"]>[translate="Your_shopping_cart_is_empty"]')
-        if header_cart:
-            shopping_cart = True
-        else:
-            shopping_cart = False"""
+            '[class="bigEmptyCart center"]>[translate="Your_shopping_cart_is_empty"]').text
+        self.assertEqual(header_cart, 'Your shopping cart is empty')
 
         # Compering the information from the order page - right after payment, to the order in 'my orders' page.
-        ordernum = self.driver.find_element_by_id("orderNumberLabel").text
-        order_date = self.driver.find_elements_by_css_selector('[class="innerSeccion"]>label>a')[1].text
-        subtotal = self.driver.find_elements_by_css_selector('[class="innerSeccion"]>label>a')[2].text
-
         My_Orders(self.driver).go_to_my_orders()
-        detailslist = My_Orders(self.driver).order_details(-2)
+        detailslist = My_Orders(self.driver).order_details(1)
         self.assertEqual(detailslist[0], ordernum)
-        ##################self.assertEqual(detailslist[1], order_date)
         self.assertEqual(detailslist[2], subtotal)
 
         productA = My_Orders(self.driver).order_product_details(1, 0)
         productB = My_Orders(self.driver).order_product_details(1, 1)
-        self.assertEqual(productA, product1)
-        self.assertEqual(productB, product2)
+        self.assertEqual(productA[0], product1[0])
+        self.assertEqual(productA[1], product1[2])
+        self.assertEqual(productA[2], product1[1])
+        self.assertEqual(productB[0], product2[0])
+        self.assertEqual(productB[1], product2[2])
+        self.assertEqual(productB[2], product2[1])
 
     def test_9(self):
-        self.skipTest()
+        #self.skipTest()
         # Adding products to the cart and keeping it's details in lists.
         Main_Page(self.driver).click_speakers()
         Category_Page(self.driver).focus_on_a_product(2).click()
@@ -295,39 +295,34 @@ class All_Tests(TestCase):
         CheckOut(self.driver).insert_username_in_payment('aaAA11')
         CheckOut(self.driver).insert_password_in_payment('aaAA11')
         CheckOut(self.driver).log_in()
-        Actions.checkout_details('1234567891234567', '123', '01', '2022', 'nitzan')
+        Actions.checkout_details(self.driver, '1234567891234567', '123', '01', '2022', 'nitzan')
 
         # Checking if the order made was successfully.
         header_payment = self.driver.find_element_by_css_selector("[translate='ORDER_PAYMENT']").text
-        payment_method = self.driver.find_elements_by_css_selector('[class="innerSeccion"]>label')[5].text
-        """if header_payment and payment_method:
-            order_payment = True
-        else:
-            order_payment = False
+        WebDriverWait(self.driver, 10).until(EC.visibility_of_element_located((By.ID, 'orderNumberLabel')))
+        ordernum = self.driver.find_element_by_id("orderNumberLabel").text
+        subtotal = self.driver.find_elements_by_css_selector('[class="innerSeccion"]>label>a')[2].text
+        self.assertEqual(header_payment, 'ORDER PAYMENT')
 
-        time.sleep(5)
         Main_Page(self.driver).click_cart()
-        header_cart = self.driver.find_element_by_css_selector('[class="bigEmptyCart center"]>[translate="Your_shopping_cart_is_empty"]').text
-        if header_cart:
-            shopping_cart = True
-        else:
-            shopping_cart = False"""
+        header_cart = self.driver.find_element_by_css_selector(
+            '[class="bigEmptyCart center"]>[translate="Your_shopping_cart_is_empty"]').text
+        self.assertEqual(header_cart, 'Your shopping cart is empty')
 
         # Compering the information from the order page - right after payment, to the order in 'my orders' page.
-        ordernum = self.driver.find_element_by_id("orderNumberLabel").text
-        order_date = self.driver.find_elements_by_css_selector('[class="innerSeccion"]>label>a')[1].text
-        subtotal = self.driver.find_elements_by_css_selector('[class="innerSeccion"]>label>a')[2].text
-
         My_Orders(self.driver).go_to_my_orders()
         detailslist = My_Orders(self.driver).order_details(-2)
         self.assertEqual(detailslist[0], ordernum)
-        ##################self.assertEqual(detailslist[1], order_date)
         self.assertEqual(detailslist[2], subtotal)
 
         productA = My_Orders(self.driver).order_product_details(1, 0)
         productB = My_Orders(self.driver).order_product_details(1, 1)
-        self.assertEqual(productA, product1)
-        self.assertEqual(productB, product2)
+        self.assertEqual(productA[0], product1[0])
+        self.assertEqual(productA[1], product1[2])
+        self.assertEqual(productA[2], product1[1])
+        self.assertEqual(productB[0], product2[0])
+        self.assertEqual(productB[1], product2[2])
+        self.assertEqual(productB[2], product2[1])
 
     def test_10(self):
         self.skipTest()
