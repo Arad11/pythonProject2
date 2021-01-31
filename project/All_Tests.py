@@ -22,9 +22,7 @@ class All_Tests(TestCase):
         print("tearDown")
 
     def test_1(self):
-        #self.skipTest()
         Actions.add_3_products(self.driver, "mice")
-        #time.sleep(2)
         self.driver.find_element_by_css_selector("[href='#/shoppingCart']").click()
         y = Actions.values_from_a_table(self.driver, "[class='fixedTableEdgeCompatibility']", 4)
         total_amount = 0
@@ -33,7 +31,6 @@ class All_Tests(TestCase):
         self.assertEqual(total_amount, int(self.driver.find_element_by_css_selector('[id="shoppingCartLink"]>span').text))
 
     def test_2(self):
-        #self.skipTest()
         names = []
         quantity = []
         price = []
@@ -70,7 +67,6 @@ class All_Tests(TestCase):
         self.assertEqual(pop_up_products_color, colors[::-1])
 
     def test_3(self):
-        #self.skipTest()
         Actions.add_3_products(self.driver, 'mice')
         # Making a list of the products in the cart.
         names = []
@@ -98,7 +94,6 @@ class All_Tests(TestCase):
         self.assertNotIn(deleted_product_name, names2)
 
     def test_4(self):
-        #self.skipTest()
         # Adding products to the cart.
         Main_Page(self.driver).click_speakers()
         Category_Page(self.driver).focus_on_a_product(2).click()
@@ -117,7 +112,6 @@ class All_Tests(TestCase):
         self.assertEqual(header.text, 'SHOPPING CART')
 
     def test_5(self):
-        #self.skipTest()
         Actions.add_3_products(self.driver, "mice")
         time.sleep(2)
         self.driver.find_element_by_css_selector("[href='#/shoppingCart']").click()
@@ -146,28 +140,15 @@ class All_Tests(TestCase):
             count_price += float(products_price[i].replace("$", ""))
 
         # access to the price in the cart shopping
-        cart_price = self.driver.find_element_by_css_selector('[class="roboto-medium cart-total ng-binding"]').text.replace(
-            "$", "")
+        cart_price = self.driver.find_element_by_css_selector('[class="roboto-medium cart-total ng-binding"]').text.replace("$", "")
         print(cart_price)
         # access to the products count - pop-up
         pop_up_count = self.driver.find_element_by_css_selector('[class="roboto-regular ng-binding"]').text.split()[0]
 
-        # why can't convert string to float?
-        # if float(cart_price) == count_price:
-        #     print("True")
-        #
-        # else:
-        #     print("False")
-        #
-        # if int(pop_up_count[-1]) == int(products_number):
-        #     print("True")
-        # else:
-        #     print("False ")
         self.assertEqual(float(cart_price), count_price)
         self.assertEqual(int(pop_up_count[-1]), int(products_number))
 
     def test_6(self):
-        #self.skipTest()
         names = []
         color = []
         quantity = []
@@ -209,7 +190,6 @@ class All_Tests(TestCase):
         self.assertEqual(changes[2], [3, 5])
 
     def test_7(self):
-        #self.skipTest()
         Main_Page(self.driver).click_tablets()
         Category_Page(self.driver).focus_on_a_product(1).click()
         Product_Page(self.driver).add_to_cart()
@@ -219,7 +199,7 @@ class All_Tests(TestCase):
         self.assertEqual(self.driver.current_url, "https://www.advantageonlineshopping.com/#/")
 
     def test_8(self):
-        #self.skipTest()
+
         # Adding products to the cart and keeping it's details in lists.
         Main_Page(self.driver).click_speakers()
         Category_Page(self.driver).focus_on_a_product(2).click()
@@ -274,7 +254,7 @@ class All_Tests(TestCase):
         self.assertEqual(productB[2], product2[1])
 
     def test_9(self):
-        #self.skipTest()
+
         # Adding products to the cart and keeping it's details in lists.
         Main_Page(self.driver).click_speakers()
         Category_Page(self.driver).focus_on_a_product(2).click()
@@ -323,7 +303,6 @@ class All_Tests(TestCase):
         self.assertEqual(productB[2], product2[1])
 
     def test_10(self):
-        #self.skipTest()
         Main_Page(self.driver).create_user_new_user_pop_up()
         User_Pop_Up(self.driver).insert_user_name()
         User_Pop_Up(self.driver).insert_user_password()
