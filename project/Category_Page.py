@@ -1,4 +1,6 @@
 class Category_Page:
+    """This class refers to the Category page and actions in it."""
+
     def __init__(self, driver):
         self.driver = driver
 

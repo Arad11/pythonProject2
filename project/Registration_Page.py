@@ -1,4 +1,6 @@
 class Registration_Page:
+    """This class refers to the Registration page inside the checkout process."""
+
     def __init__(self, driver):
         self.driver = driver
 

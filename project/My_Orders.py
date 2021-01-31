@@ -1,5 +1,11 @@
-import time
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.common.by import By
+
+
 class My_Orders:
+    """This class refers to the My Orders page and the information in it."""
+
     def __init__(self, driver):
         self.driver = driver
 
@@ -9,22 +15,53 @@ class My_Orders:
         return self.driver.find_element_by_css_selector('[id = "menuUserLink"] > div > [translate = "My_Orders"]').click()
 
     def order_details(self, ordernum):
-        # order = self.driver.find_elements_by_class_name('products ng-scope')[ordernum]
-        # details = self.driver.find_elements_by_class_name("orderDetails")[ordernum]
-        time.sleep(2)
-        order_num = self.driver.find_elements_by_css_selector('[class="left ng-binding"]')
-        order_date = self.driver.find_elements_by_css_selector('[class="center ng-binding"]')[ordernum].text
-        total_price = self.driver.find_elements_by_css_selector('[class="right ng-binding"]')[ordernum].text
+        """This action returns a list of the order's details - order number, order date and subtotal."""
+        table = self.driver.find_element_by_css_selector('#myAccountContainer > div > table')
+        row = table.find_elements_by_tag_name("tr")[ordernum]
+        answer = []
+        cells = row.find_elements_by_tag_name("td")
+        for i in range(len(cells)):
+            if i == 0:
+                answer.append(cells[i].text)
 
-        return (order_num[ordernum], type(order_num[ordernum]), len(order_num))
-        # return {'order_num': order_num, 'order_date': order_date, 'total_price': total_price}
+            if i == 1:
+                answer.append(cells[i].text)
+
+            if i == 6:
+                answer.append(cells[i].find_element_by_tag_name('label').text)
+        return answer
 
     def order_product_details(self, ordernum, product_num):
-        order = self.driver.find_elements_by_css_selector('[class="tabletsSection"]>[class="products ng-scope"]')[ordernum]
-        products = order.find_elements_by_tag_name("div")[1]
-        product = products.find_elements_by_tag_name("div")[product_num]
-        name = product.find_elements_by_css_selector('div>span')[product_num].text
-        quantity = product.find_elements_by_tag_name('label')[0].text
-        color = product.find_elements_by_css_selector('div>label>span')[product_num].text
-        return {'name': name, 'quantity': quantity, 'color': color}
+        """This action returns a list of the product's details in a specific order - product name, color, quantity."""
+        if product_num == 0:
+            table = self.driver.find_element_by_css_selector('#myAccountContainer > div > table')
+            row = table.find_elements_by_tag_name("tr")[ordernum]
+            answer = []
+            cells = row.find_elements_by_tag_name("td")
+            for i in range(len(cells)):
+                if i == 3:
+                    answer.append(cells[i].find_element_by_tag_name('span').text.upper())
+
+                if i == 4:
+                    answer.append(cells[i].find_element_by_tag_name('div').get_attribute('title').upper())
+
+                if i == 5:
+                    answer.append(cells[i].text)
+
+        if product_num > 0:
+            table = self.driver.find_element_by_css_selector('#myAccountContainer > div > table')
+            row = table.find_elements_by_tag_name("tr")[ordernum+product_num]
+            answer = []
+            cells = row.find_elements_by_tag_name("td")
+            for i in range(len(cells)):
+                if i == 0:
+                    answer.append(cells[i].text.upper())
+
+                if i == 1:
+                    answer.append(cells[i].find_element_by_tag_name('div').get_attribute('title').upper())
+
+                if i == 2:
+                    answer.append(cells[i].text)
+
+        return answer
 

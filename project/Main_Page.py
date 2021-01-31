@@ -2,6 +2,8 @@ import time
 
 
 class Main_Page:
+    """This class refers to the Main page and actions in it."""
+
     def __init__(self, driver):
         self.driver = driver
 
